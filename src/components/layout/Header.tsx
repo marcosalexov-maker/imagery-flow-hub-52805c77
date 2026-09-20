@@ -16,9 +16,6 @@ const Header = () => {
   }, {
     href: "/blog",
     label: "Journal"
-  }, {
-    href: "/contact",
-    label: "Contact"
   }];
 
   // Close menu on route change
