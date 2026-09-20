@@ -308,4 +308,14 @@
   .text-balance {
     text-wrap: balance;
   }
+
+  /* Hidden scrollbar (content remains scrollable) */
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
 }
