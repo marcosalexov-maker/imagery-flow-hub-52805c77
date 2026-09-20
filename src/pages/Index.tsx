@@ -26,11 +26,11 @@ const Index = () => {
         
         {/* Content */}
         <div className="container relative z-10 text-center">
-          <HeroContent className="flex flex-col gap-[15px] max-w-5xl mx-auto items-center">
+          <HeroContent className="flex flex-col gap-[12px] max-w-5xl mx-auto items-center">
             {/* Text Group */}
-            <div className="flex flex-col gap-[10px]">
+            <div className="flex flex-col gap-[12px]">
               <HeroItem>
-                <p className="-mb-1.5 text-sm font-medium tracking-[0.3em] uppercase text-white/70">FILMMAKING & PHOTOGRAPHY</p>
+                <p className="text-sm font-medium tracking-[0.3em] uppercase text-white/70">FILMMAKING & PHOTOGRAPHY</p>
               </HeroItem>
               <HeroItem>
                 <TypingHeading />
