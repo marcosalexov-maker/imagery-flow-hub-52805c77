@@ -166,7 +166,9 @@ const Index = () => {
                 </p>
               </div>
             </StaggerItem>
-            </StaggerContainer>
+                </StaggerContainer>
+              </div>
+            </div>
           </div>
         </div>
       </section>
