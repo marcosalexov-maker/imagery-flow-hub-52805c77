@@ -102,8 +102,9 @@ const Header = () => {
 
           {/* Clean Menu Button: pure text, no background, no icon lines */}
           <button
+            type="button"
             onClick={() => setIsOpen(true)}
-            className="font-medium tracking-[0.2em] uppercase text-xs md:text-sm text-white/70 hover:text-white transition-colors duration-300 focus:outline-none"
+            className="p-2 font-medium tracking-[0.2em] uppercase text-xs md:text-sm text-white/70 hover:text-white transition-colors duration-300 focus:outline-none cursor-pointer"
             aria-label="Abrir menu"
           >
             Menu
@@ -114,14 +115,16 @@ const Header = () => {
       {/* Fullscreen Pop-up Menu */}
       <div
         className={`fixed inset-0 z-[100] bg-black transition-all duration-500 flex flex-col ${
-          isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+          isOpen
+            ? "opacity-100 pointer-events-auto visible"
+            : "opacity-0 pointer-events-none invisible"
         }`}
         role="dialog"
         aria-modal="true"
         aria-label="Menu de navegação"
       >
-        {/* Top bar with logo and close 'X' button (z-30 ensures it's always above nav) */}
-        <div className="container relative z-30 flex items-center justify-between h-16 pointer-events-auto">
+        {/* Top bar with logo and close 'X' button */}
+        <div className="container relative z-30 flex items-center justify-between h-16">
           <button
             type="button"
             onClick={handleCloseAndReturnHome}
