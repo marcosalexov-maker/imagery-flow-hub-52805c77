@@ -1,46 +1,49 @@
 import { Link } from "react-router-dom";
 import { Linkedin, Instagram } from "lucide-react";
+import siteContent from "@/content/siteContent";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const { footer, brand } = siteContent;
+
   return (
     <footer className="border-t border-white/10 bg-black text-white">
       <div className="container py-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           <div>
             <Link to="/" className="font-bold tracking-tight text-lg">
-              Marcos Alex
+              {footer.brandName}
             </Link>
             <p className="mt-4 text-muted-foreground max-w-xs">
-              Visual storytelling to add value to your brand
+              {footer.tagline}
             </p>
           </div>
 
           <div>
-            <h4 className="font-semibold mb-4">Explore</h4>
+            <h4 className="font-semibold mb-4">{footer.exploreHeading}</h4>
             <nav className="flex flex-col gap-3">
               <Link
                 to="/portfolio"
                 className="text-muted-foreground hover:text-foreground transition-colors"
               >
-                Portfolio
+                {footer.portfolioLinkLabel}
               </Link>
               <Link
                 to="/blog"
                 className="text-muted-foreground hover:text-foreground transition-colors"
               >
-                Blog
+                {footer.blogLinkLabel}
               </Link>
             </nav>
           </div>
 
           <div>
-            <h4 className="font-semibold mb-4">Connect</h4>
+            <h4 className="font-semibold mb-4">{footer.connectHeading}</h4>
             <div className="flex flex-col gap-3 text-muted-foreground">
               {/* Social Media Icons */}
               <div className="flex items-center gap-4 mb-1">
                 <a
-                  href="https://www.linkedin.com/in/marcos-alex/"
+                  href={brand.socialLinks.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-muted-foreground hover:text-white transition-colors duration-300 focus:outline-none"
@@ -49,7 +52,7 @@ const Footer = () => {
                   <Linkedin className="w-5 h-5 stroke-[1.5]" />
                 </a>
                 <a
-                  href="https://www.instagram.com/marcos_lex1"
+                  href={brand.socialLinks.instagram}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-muted-foreground hover:text-white transition-colors duration-300 focus:outline-none"
@@ -60,21 +63,21 @@ const Footer = () => {
               </div>
 
               <a
-                href="mailto:marcosalexov@gmail.com"
+                href={`mailto:${footer.email}`}
                 className="hover:text-foreground transition-colors"
               >
-                marcosalexov@gmail.com
+                {footer.email}
               </a>
-              <span>CwB/PR - Brazil</span>
+              <span>{footer.location}</span>
             </div>
           </div>
         </div>
 
         <div className="mt-16 pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-muted-foreground">
-            © {currentYear} Marcos Alex. All rights reserved.
+            © {currentYear} {footer.brandName}. {footer.copyrightSuffix}
           </p>
-          <p className="text-sm text-muted-foreground">Crafted with intention</p>
+          <p className="text-sm text-muted-foreground">{footer.signature}</p>
         </div>
       </div>
     </footer>

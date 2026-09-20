@@ -1,10 +1,10 @@
 import { useTypingAnimation } from '@/hooks/useTypingAnimation';
 import { cn } from '@/lib/utils';
+import siteContent from '@/content/siteContent';
 
-// ✏️ HERO HEADING TEXT - EASY TO EDIT
-// Just change this text to update the heading
-const HERO_HEADING_LINE_1 = "Stories through the lens";
-const HERO_HEADING_LINE_2 = "";
+const HERO_HEADING_LINE_1 = siteContent.home.hero.headingLine1;
+const HERO_HEADING_LINE_2 = siteContent.home.hero.headingLine2;
+
 interface TypingHeadingProps {
   className?: string;
 }

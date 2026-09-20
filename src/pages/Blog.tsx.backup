@@ -3,11 +3,9 @@ import { useBlogList } from "@/hooks/useBlog";
 import BlogCard from "@/components/blog/BlogCard";
 import LoadingSkeleton from "@/components/ui/loading-skeleton";
 import { HeroContent, HeroItem, StaggerContainer, StaggerItem } from "@/components/ui/scroll-animation";
-import siteContent from "@/content/siteContent";
 
 const Blog = () => {
   const { data: posts, isLoading, error } = useBlogList();
-  const copy = siteContent.blogPage;
 
   return (
     <Layout>
@@ -17,17 +15,17 @@ const Blog = () => {
           <HeroContent className="max-w-2xl">
             <HeroItem>
               <p className="text-sm font-medium tracking-[0.2em] uppercase text-muted-foreground mb-4">
-                {copy.badge}
+                Insights & Stories
               </p>
             </HeroItem>
             <HeroItem>
               <h1 className="text-4xl md:text-6xl tracking-tight font-normal">
-                {copy.title}
+                Our Inshights
               </h1>
             </HeroItem>
             <HeroItem>
               <p className="mt-6 text-lg text-muted-foreground">
-                {copy.description}
+                We keep it simple: valuable ideas, seamless flow, and design-driven storytelling to inspire your readers.
               </p>
             </HeroItem>
           </HeroContent>
@@ -52,7 +50,7 @@ const Blog = () => {
             </div>
           ) : error ? (
             <div className="text-center py-20 text-destructive">
-              <p>{copy.errorMessage}</p>
+              <p>Error loading blog posts. Please try again later.</p>
             </div>
           ) : posts && posts.length > 0 ? (
             <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -65,9 +63,9 @@ const Blog = () => {
           ) : (
             <div className="text-center py-20">
               <div className="max-w-md mx-auto">
-                <h2 className="text-2xl font-semibold mb-4">{copy.emptyTitle}</h2>
+                <h2 className="text-2xl font-semibold mb-4">No Posts Yet</h2>
                 <p className="text-muted-foreground">
-                  {copy.emptyDescription}
+                  Blog posts will appear here once added through Lovable Cloud.
                 </p>
               </div>
             </div>

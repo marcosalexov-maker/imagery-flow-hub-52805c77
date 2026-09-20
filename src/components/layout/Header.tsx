@@ -1,13 +1,9 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { X } from "lucide-react";
+import siteContent from "@/content/siteContent";
 
-const NAV_LINKS = [
-  { label: "Portfolio", href: "/portfolio" },
-  { label: "About", href: "/#about" },
-  { label: "Journal", href: "/blog" },
-  { label: "Contact", href: "/#contact" },
-];
+const NAV_LINKS = siteContent.navigation.links;
 
 const isActive = (href: string, pathname: string) => {
   if (href === "/portfolio") return pathname.startsWith("/portfolio");
