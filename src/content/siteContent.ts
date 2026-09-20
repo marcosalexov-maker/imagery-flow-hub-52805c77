@@ -166,10 +166,10 @@ export const siteContent = {
   // 5. BLOG / JOURNAL PAGES (Blog.tsx & Detail)
   // ==========================================
   blogPage: {
-    badge: "Insights & Stories",
+    badge: "Stories",
     title: "Our Insights",
     description:
-      "We keep it simple: valuable ideas, seamless flow, and design-driven storytelling to inspire your readers.",
+      "Stories alredy told",
     emptyTitle: "No Posts Yet",
     emptyDescription: "Blog posts will appear here once added through Lovable Cloud.",
     errorMessage: "Error loading blog posts. Please try again later.",

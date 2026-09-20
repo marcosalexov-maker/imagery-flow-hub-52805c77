@@ -23,6 +23,10 @@ import gp8 from "@/assets/granprix/gp-8.jpg";
 import gp9 from "@/assets/granprix/gp-9.jpg";
 import gp10 from "@/assets/granprix/gp-10.jpg";
 
+// Capas otimizadas para carregamento rápido dos cards (Home e Portfólio)
+import roma199Cover from "@/assets/covers/roma-199-cover.jpg";
+import gp1Cover from "@/assets/covers/gp-1-cover.jpg";
+
 const ROMA_ID = "roma-la-conquista";
 const GP_ID = "gran-prix-ademicon";
 const NOW = "2026-08-22T23:56:48.756Z";
@@ -36,7 +40,7 @@ export const portfolioProjects: PortfolioProject[] = [
     description:
       'Registro fotográfico e em vídeo da campanha de incentivo "La Conquista", uma viagem realizada pela maior administradora de consórcios do Brasil, "Ademicon Consórcio e Investimento". A viagem, que teve como destino principal a capital da Itália, também passou por Firenze e pelo Vaticano.',
     year: 2026,
-    preview_image_1: roma199,
+    preview_image_1: roma199Cover,
     preview_image_2: roma836,
     preview_image_3: roma438,
     preview_image_4: roma224,
@@ -51,7 +55,7 @@ export const portfolioProjects: PortfolioProject[] = [
     description:
       'A campanha de incentivo "Gran Prix Ademicon", levou os melhores vendedores para Montevidéu, Uruguai. Desde cenários urbanos impressionantes até momentos de grande emoção e velocidade com participação no evento de corrida da TCR South America. A essência da corrida juntamente aos representantes da marca é relembrada nas fotos e no registro em vídeo da viagem.',
     year: 2025,
-    preview_image_1: gp1,
+    preview_image_1: gp1Cover,
     preview_image_2: gp3,
     preview_image_3: gp8,
     preview_image_4: gp10,
