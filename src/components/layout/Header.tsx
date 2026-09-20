@@ -48,28 +48,27 @@ const Header = () => {
     };
   }, [isOpen]);
 
-  // Handle ESC key to close menu
+  // Handle ESC key to close menu and return home
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape" && isOpen) {
-        handleCloseMenu();
+        handleCloseAndReturnHome();
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen]);
+  }, [isOpen, location.pathname, location.hash]);
 
-  const handleCloseMenu = () => {
-    setIsOpen(false);
-  };
-
-  const handleReturnHome = () => {
+  const handleCloseAndReturnHome = (e?: React.MouseEvent) => {
+    if (e) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
     setIsOpen(false);
     if (location.pathname !== "/" || location.hash) {
       navigate("/");
-    } else {
-      window.scrollTo({ top: 0, behavior: "smooth" });
     }
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleNavClick = (href: string) => {
@@ -121,27 +120,29 @@ const Header = () => {
         aria-modal="true"
         aria-label="Menu de navegação"
       >
-        {/* Top bar with logo and close 'X' button */}
-        <div className="container flex items-center justify-between h-16">
+        {/* Top bar with logo and close 'X' button (z-30 ensures it's always above nav) */}
+        <div className="container relative z-30 flex items-center justify-between h-16 pointer-events-auto">
           <button
-            onClick={handleReturnHome}
-            className="text-2xl font-bold tracking-tight leading-none text-white hover:opacity-80 transition-opacity focus:outline-none"
+            type="button"
+            onClick={handleCloseAndReturnHome}
+            className="text-2xl font-bold tracking-tight leading-none text-white hover:opacity-80 transition-opacity focus:outline-none cursor-pointer"
             aria-label="Voltar para a página inicial"
           >
             Marcos Alex
           </button>
 
           <button
-            onClick={handleCloseMenu}
-            className="p-2 text-white/80 hover:text-white hover:rotate-90 transition-all duration-300 focus:outline-none"
-            aria-label="Close menu"
+            type="button"
+            onClick={handleCloseAndReturnHome}
+            className="p-3 text-white/80 hover:text-white hover:rotate-90 transition-all duration-300 focus:outline-none cursor-pointer relative z-40"
+            aria-label="Fechar menu e voltar para a home page"
           >
-            <X className="w-6 h-6 stroke-[1.5]" />
+            <X className="w-7 h-7 stroke-[1.5]" />
           </button>
         </div>
 
         {/* Centered Navigation Options */}
-        <nav className="flex-1 flex flex-col items-center justify-center -mt-16">
+        <nav className="flex-1 flex flex-col items-center justify-center relative z-10">
           <ul className="flex flex-col items-center gap-7 sm:gap-9 md:gap-11">
             {NAV_LINKS.map((link, index) => {
               const active = isActive(link.href, location.pathname);
