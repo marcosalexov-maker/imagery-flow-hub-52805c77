@@ -103,7 +103,7 @@ export const portfolioMedia: PortfolioMedia[] = [
     "youtube",
     "https://www.youtube.com/watch?v=9iGeZ5ksCIk",
     10,
-    "Roma - La Conquista - Travel Video",
+    "Roma - La Conquista (Filme Oficial)",
     "Documentário completo da campanha La Conquista, registrando os momentos mais marcantes da viagem pela Itália.",
   ),
   media(
@@ -111,7 +111,7 @@ export const portfolioMedia: PortfolioMedia[] = [
     "youtube",
     "https://www.youtube.com/watch?v=4z_ke3tCy20",
     11,
-    "Travel highlight video",
+    "Highlights da Viagem (Teaser)",
     "Os melhores momentos da viagem em um vídeo dinâmico com os destaques da experiência.",
   ),
 
@@ -130,16 +130,16 @@ export const portfolioMedia: PortfolioMedia[] = [
     "youtube",
     "https://www.youtube.com/watch?v=ee6tLrVsUC0",
     11,
-    "Gran Prix Ademicon - Travel Video",
-    "The complete experience of the Gran Prix Ademicon (Short Video).",
+    "Gran Prix Ademicon (Filme Oficial)",
+    "Experiência completa da campanha Gran Prix Ademicon com a TCR South America.",
   ),
   gpMedia(
     "gp-video-2",
     "youtube",
     "https://www.youtube.com/shorts/xe-5BJlNVnI",
     12,
-    "Gran Prix (Social Media Version)",
-    "Vertical video for social media.",
+    "Gran Prix (Cortes Verticais / Social Media)",
+    "Registro dinâmico em formato vertical planejado para reels e engajamento em redes sociais.",
   ),
 ];
 

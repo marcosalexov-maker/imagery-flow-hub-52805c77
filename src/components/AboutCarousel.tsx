@@ -4,13 +4,23 @@ import aboutImage1 from "@/assets/about/about-1.webp";
 import aboutImage2 from "@/assets/about/about-2.webp";
 import aboutImage3 from "@/assets/about/about-3.webp";
 import aboutImage4 from "@/assets/about/about-4.webp";
+import siteContent from "@/content/siteContent";
 
-const ABOUT_IMAGES = [
-  { src: aboutImage1, alt: "Marcos Alex fotografando durante um evento" },
-  { src: aboutImage2, alt: "Marcos Alex fotografando ao ar livre" },
-  { src: aboutImage3, alt: "Marcos Alex operando uma câmera profissional" },
-  { src: aboutImage4, alt: "Marcos Alex filmando com um estabilizador" },
+const rawImages = [aboutImage1, aboutImage2, aboutImage3, aboutImage4];
+const fallbackAlts = [
+  "Marcos Alex fotografando durante um evento corporativo",
+  "Marcos Alex capturando fotografia ao ar livre",
+  "Marcos Alex operando uma câmera de cinema profissional",
+  "Marcos Alex em gravação com estabilizador gimbal",
 ];
+
+const ABOUT_IMAGES = rawImages.map((src, index) => ({
+  src,
+  alt:
+    siteContent.home.aboutSection.carouselImages?.[index]?.alt ||
+    fallbackAlts[index] ||
+    "Marcos Alex em produção audiovisual",
+}));
 
 const AboutCarousel = () => {
   const [currentImage, setCurrentImage] = useState(0);

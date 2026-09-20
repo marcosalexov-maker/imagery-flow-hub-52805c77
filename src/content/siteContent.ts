@@ -26,7 +26,8 @@ export const siteContent = {
     tagline: "Visual storytelling to add value to your brand",
     email: "marcosalexov@gmail.com",
     phone: "+55 41 98421-6095",
-    whatsappUrl: "https://wa.me/5541984216095",
+    whatsappUrl:
+      "https://wa.me/5541984216095?text=Ol%C3%A1%20Marcos,%20vi%20seu%20portf%C3%B3lio%20e%20gostaria%20de%20solicitar%20uma%20proposta%20audiovisual.",
     whatsappCtaText: "Whatsapp (+55 41 98421-6095)",
     location: "CwB/PR - Brazil",
     socialLinks: {
@@ -76,34 +77,40 @@ export const siteContent = {
     aboutSection: {
       badge: "ABOUT",
       title: "Marcos Alex",
+      carouselImages: [
+        { alt: "Marcos Alex fotografando durante um evento corporativo" },
+        { alt: "Marcos Alex capturando fotografia ao ar livre" },
+        { alt: "Marcos Alex operando uma câmera de cinema profissional" },
+        { alt: "Marcos Alex em gravação com estabilizador gimbal" },
+      ],
       features: [
         {
           id: "storytelling",
           badge: "STORYTELLING",
           title: "Visual Storytelling",
           description:
-            "Capturing moments isn’t just about kepping the quality, the story behind is what captures the eyes.",
+            "Capturing moments isn’t just about keeping the quality; the story behind is what truly captures the eyes.",
         },
         {
           id: "impact",
           badge: "IMPACT",
           title: "Brand Impact",
           description:
-            "Every brand has its on way, every production should follow it. The creative direction is based on the brand essence.",
+            "Every brand has its own way, and every production should follow it. Creative direction tailored to the brand essence.",
         },
         {
           id: "filmmaking",
           badge: "FILMMAKING",
           title: "Uncompromising Quality",
           description:
-            "From documentaries to event aftermovies. The language behind changes, but always with pourpose and along the client desire.",
+            "From documentaries to high-energy aftermovies. The cinematic language adapts, always with purpose and aligned with client goals.",
         },
         {
           id: "photography",
           badge: "PHOTOGRAPHY",
           title: "Moments to be Remembered",
           description:
-            "Experience on event and general portraits photography. As well capturing travel photos.",
+            "Extensive experience in corporate events, executive portraits, and international travel photography.",
         },
       ],
     },
