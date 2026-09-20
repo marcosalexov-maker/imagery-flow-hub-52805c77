@@ -100,7 +100,7 @@ const Index = () => {
             </FadeUp>
 
             {/* Features List - scrollable, matching the carousel height */}
-            <div className="md:h-[600px] md:overflow-hidden">
+            <div className="md:h-[480px] md:overflow-hidden">
               <div className="no-scrollbar flex h-full flex-col overflow-y-auto">
                 <StaggerContainer className="my-auto grid grid-cols-1 gap-5">
             {/* Visual Storytelling */}
