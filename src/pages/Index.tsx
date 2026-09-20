@@ -172,6 +172,40 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      {/* CTA Section */}
+      <section className="pt-8 md:pt-10 pb-12 md:pb-16 bg-black text-white">
+        <div className="container">
+          <FadeUp>
+            <div className="flex flex-col items-center text-center gap-6">
+              <p className="text-sm font-medium tracking-[0.3em] uppercase text-white/60">
+                GET IN TOUCH
+              </p>
+              <h2 className="text-4xl md:text-5xl tracking-tight font-normal">
+                Let&apos;s Connect
+              </h2>
+              <div className="flex flex-col sm:flex-row items-center gap-4 mt-2">
+                <a
+                  href="https://wa.me/5541984216095"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 bg-white text-black font-medium rounded-full hover:bg-white/90 transition-all duration-300 px-8 py-3.5"
+                >
+                  <MessageCircle className="w-5 h-5" />
+                  Whatsapp (+55 41 98421-6095)
+                </a>
+                <a
+                  href="mailto:marcosalexo@gmail.com"
+                  className="inline-flex items-center justify-center gap-2 border border-white/20 text-white font-medium rounded-full hover:bg-white/10 transition-all duration-300 px-8 py-3.5"
+                >
+                  <Mail className="w-5 h-5" />
+                  Email (marcosalexo@gmail.com)
+                </a>
+              </div>
+            </div>
+          </FadeUp>
+        </div>
+      </section>
     </Layout>;
 };
 export default Index;
