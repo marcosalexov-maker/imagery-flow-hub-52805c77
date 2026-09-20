@@ -34,6 +34,10 @@ export const siteContent = {
       linkedin: "https://www.linkedin.com/in/marcos-alex/",
       instagram: "https://www.instagram.com/marcos_lex1",
     },
+    // Envio direto do formulário (sem abrir aplicativo de e-mail / mailto):
+    // Obtenha sua chave gratuita em https://web3forms.com inserindo seu e-mail:
+    web3FormsAccessKey: "", // Cole sua chave Web3Forms aqui
+    formspreeUrl: "", // Ou insira a URL do seu Formspree aqui se preferir
   },
 
   // ==========================================
@@ -138,6 +142,7 @@ export const siteContent = {
         messageError: "Message is required",
 
         submitButton: "Send Message",
+        submittingButton: "Sending...",
         successTitle: "Message Sent!",
         successDescription:
           "Thank you for reaching out. I'll get back to you as soon as possible.",

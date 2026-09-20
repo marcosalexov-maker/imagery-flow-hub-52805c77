@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Zap, Eye, Sparkles, Clapperboard, Camera, MessageCircle, Send, CheckCircle } from "lucide-react";
+import { ArrowRight, Zap, Eye, Sparkles, Clapperboard, Camera, MessageCircle, Send, CheckCircle, Loader2 } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import { usePortfolioList } from "@/hooks/usePortfolio";
 import PortfolioSlider from "@/components/portfolio/PortfolioSlider";
@@ -20,6 +20,7 @@ const ContactFormCard = () => {
   const { toast } = useToast();
   const formCopy = siteContent.home.contactSection.form;
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -54,20 +55,84 @@ const ContactFormCard = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateForm()) return;
-    if (formData.website) return; // Honeypot
+    if (formData.website) return; // Honeypot filled by bot
 
     const subject = `New project inquiry — ${formData.projectType.trim() || "General"}`;
-    const body = `Name: ${formData.name.trim()}\nEmail: ${formData.email.trim()}\nProject Type: ${formData.projectType.trim() || "—"}\n\n${formData.message.trim()}`;
-    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    const accessKey = siteContent.brand.web3FormsAccessKey?.trim();
+    const formspreeUrl = siteContent.brand.formspreeUrl?.trim();
 
-    setIsSubmitted(true);
-    toast({
-      title: "Message ready!",
-      description: "Your email client has been opened with your message.",
-    });
+    // Direct asynchronous submission via Web3Forms or Formspree webhook:
+    if (accessKey || formspreeUrl) {
+      setIsSubmitting(true);
+      try {
+        const endpoint = formspreeUrl || "https://api.web3forms.com/submit";
+        const payload = accessKey
+          ? {
+              access_key: accessKey,
+              subject,
+              from_name: `${formData.name.trim()} (Marcos Alex Portfolio)`,
+              name: formData.name.trim(),
+              email: formData.email.trim(),
+              project_type: formData.projectType.trim() || "—",
+              message: formData.message.trim(),
+              botcheck: "",
+            }
+          : {
+              name: formData.name.trim(),
+              email: formData.email.trim(),
+              projectType: formData.projectType.trim() || "—",
+              message: formData.message.trim(),
+              _subject: subject,
+            };
+
+        const response = await fetch(endpoint, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify(payload),
+        });
+
+        const data = await response.json().catch(() => ({}));
+
+        if (response.ok && data.success !== false) {
+          setIsSubmitted(true);
+          toast({
+            title: formCopy.successTitle,
+            description: formCopy.successDescription,
+          });
+          return;
+        } else {
+          throw new Error(data.message || "Failed to submit form");
+        }
+      } catch (error) {
+        console.error("Direct form submission error:", error);
+        // Fallback to mailto if webhook fails
+        const body = `Name: ${formData.name.trim()}\nEmail: ${formData.email.trim()}\nProject Type: ${formData.projectType.trim() || "—"}\n\n${formData.message.trim()}`;
+        window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        toast({
+          title: "Notice",
+          description: "Could not send automatically. Opening your email client instead.",
+          variant: "destructive",
+        });
+      } finally {
+        setIsSubmitting(false);
+      }
+    } else {
+      // Default fallback when no webhook access key is configured yet
+      const body = `Name: ${formData.name.trim()}\nEmail: ${formData.email.trim()}\nProject Type: ${formData.projectType.trim() || "—"}\n\n${formData.message.trim()}`;
+      window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+      setIsSubmitted(true);
+      toast({
+        title: "Message ready!",
+        description: "Your email client has been opened with your message.",
+      });
+    }
   };
 
   const resetForm = () => {
@@ -184,10 +249,20 @@ const ContactFormCard = () => {
           <div className="flex justify-center pt-1">
             <button
               type="submit"
-              className="inline-flex items-center justify-center gap-2 bg-white text-black font-medium rounded-full hover:bg-white/90 transition-all duration-300 px-8 py-3.5"
+              disabled={isSubmitting}
+              className="inline-flex items-center justify-center gap-2 bg-white text-black font-medium rounded-full hover:bg-white/90 transition-all duration-300 px-8 py-3.5 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
             >
-              {formCopy.submitButton}
-              <Send className="w-4 h-4" />
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <span>{formCopy.submittingButton || "Sending..."}</span>
+                </>
+              ) : (
+                <>
+                  <span>{formCopy.submitButton}</span>
+                  <Send className="w-4 h-4" />
+                </>
+              )}
             </button>
           </div>
         </form>
