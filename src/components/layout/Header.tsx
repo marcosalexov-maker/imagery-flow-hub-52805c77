@@ -48,16 +48,20 @@ const Header = () => {
     };
   }, [isOpen]);
 
-  // Handle ESC key to return home and close menu
+  // Handle ESC key to close menu
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape" && isOpen) {
-        handleReturnHome();
+        handleCloseMenu();
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen]);
+
+  const handleCloseMenu = () => {
+    setIsOpen(false);
+  };
 
   const handleReturnHome = () => {
     setIsOpen(false);
@@ -117,7 +121,7 @@ const Header = () => {
         aria-modal="true"
         aria-label="Menu de navegação"
       >
-        {/* Top bar with close 'X' button returning to home */}
+        {/* Top bar with logo and close 'X' button */}
         <div className="container flex items-center justify-between h-16">
           <button
             onClick={handleReturnHome}
@@ -128,9 +132,9 @@ const Header = () => {
           </button>
 
           <button
-            onClick={handleReturnHome}
+            onClick={handleCloseMenu}
             className="p-2 text-white/80 hover:text-white hover:rotate-90 transition-all duration-300 focus:outline-none"
-            aria-label="Fechar menu e retornar à página inicial"
+            aria-label="Close menu"
           >
             <X className="w-6 h-6 stroke-[1.5]" />
           </button>
