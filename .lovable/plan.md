@@ -15,7 +15,11 @@ Remove the "Menu" button and fullscreen overlay from the header. Replace it with
 Match the grey label texts above section titles (e.g. "SELECTED WORK", "ABOUT"):
 - Small uppercase text with letter spacing: `text-xs md:text-sm font-medium tracking-[0.2em] uppercase`
 - Grey (`text-white/60`) that turns white on hover, with a smooth color transition.
-- Compact gap between items so all four fit in the header, including on mobile.
+- Compact gap between items so all four fit in the header on desktop.
+
+## Mobile behavior
+- On mobile the header keeps a "Menu" button (right-aligned, same grey label style) that opens a fullscreen overlay stacking all four links vertically, centered, in large text — reusing the existing overlay menu design.
+- The overlay lists the same four items; tapping one navigates/scrolls and closes the menu.
 
 ## Files changed
 - `src/components/layout/Header.tsx` — remove menu button, overlay menu and its state; render the four right-aligned links.
