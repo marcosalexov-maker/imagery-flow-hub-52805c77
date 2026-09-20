@@ -260,7 +260,7 @@ const Index = () => {
       </section>
 
       {/* About Section */}
-      <section className="pt-8 md:pt-10 pb-12 md:pb-16 bg-black text-white">
+      <section id="about" className="pt-8 md:pt-10 pb-12 md:pb-16 bg-black text-white">
         <div className="container">
           {/* Section Header */}
           <SectionHeader className="text-center mb-8">
@@ -356,7 +356,7 @@ const Index = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="pt-8 md:pt-10 pb-12 md:pb-16 bg-black text-white">
+      <section id="contact" className="pt-8 md:pt-10 pb-12 md:pb-16 bg-black text-white">
         <div className="container">
           <FadeUp>
             <div className="flex flex-col items-center text-center gap-6">
