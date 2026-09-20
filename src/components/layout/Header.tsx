@@ -1,14 +1,12 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
-import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
+import { X } from "lucide-react";
 
 const NAV_LINKS = [
-  { label: "Portfolio", href: "/portfolio", number: "01" },
-  { label: "About", href: "/#about", number: "02" },
-  { label: "Journal", href: "/blog", number: "03" },
-  { label: "Contact", href: "/#contact", number: "04" },
+  { label: "Portfolio", href: "/portfolio" },
+  { label: "About", href: "/#about" },
+  { label: "Journal", href: "/blog" },
+  { label: "Contact", href: "/#contact" },
 ];
 
 const isActive = (href: string, pathname: string) => {
@@ -19,6 +17,7 @@ const isActive = (href: string, pathname: string) => {
 
 const Header = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const isHomepage = location.pathname === "/";
 
@@ -32,10 +31,42 @@ const Header = () => {
     }
   }, [location]);
 
-  // Close popover on route change
+  // Close menu on route change
   useEffect(() => {
     setIsOpen(false);
   }, [location.pathname]);
+
+  // Lock body scroll when fullscreen menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+
+  // Handle ESC key to return home and close menu
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isOpen) {
+        handleReturnHome();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen]);
+
+  const handleReturnHome = () => {
+    setIsOpen(false);
+    if (location.pathname !== "/" || location.hash) {
+      navigate("/");
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
 
   const handleNavClick = (href: string) => {
     setIsOpen(false);
@@ -66,76 +97,75 @@ const Header = () => {
             Marcos Alex
           </Link>
 
-          {/* Stacked Menu Pop-up on the right */}
-          <Popover open={isOpen} onOpenChange={setIsOpen}>
-            <PopoverTrigger asChild>
-              <button
-                className={cn(
-                  "flex items-center gap-2 px-4 py-2 rounded-full border transition-all duration-300 font-medium tracking-[0.2em] uppercase text-xs md:text-sm",
-                  isOpen
-                    ? "bg-white text-black border-white shadow-lg"
-                    : "bg-black/50 border-white/20 text-white/80 hover:text-white hover:border-white/50 hover:bg-black/80 backdrop-blur-md"
-                )}
-                aria-label={isOpen ? "Close menu" : "Open menu"}
-              >
-                <span>{isOpen ? "Close" : "Menu"}</span>
-                {isOpen ? <X className="w-3.5 h-3.5" /> : <Menu className="w-3.5 h-3.5" />}
-              </button>
-            </PopoverTrigger>
-
-            <PopoverContent
-              align="end"
-              sideOffset={12}
-              className="z-50 w-64 md:w-72 p-2.5 rounded-2xl border border-white/15 bg-black/95 backdrop-blur-xl shadow-2xl text-white outline-none"
-            >
-              <div className="px-3 pt-1.5 pb-2 text-[10px] uppercase tracking-[0.25em] text-white/40 font-semibold border-b border-white/10 mb-2">
-                Navigation
-              </div>
-
-              {/* Stacked navigation buttons */}
-              <nav className="flex flex-col gap-1">
-                {NAV_LINKS.map((link) => {
-                  const active = isActive(link.href, location.pathname);
-                  return (
-                    <Link
-                      key={link.href}
-                      to={link.href}
-                      onClick={() => handleNavClick(link.href)}
-                      className={cn(
-                        "group flex items-center justify-between px-3.5 py-2.5 rounded-xl transition-all duration-300",
-                        active
-                          ? "bg-white/15 text-white font-medium"
-                          : "text-white/60 hover:text-white hover:bg-white/5"
-                      )}
-                    >
-                      <span className="font-medium tracking-[0.2em] uppercase text-xs md:text-sm">
-                        {link.label}
-                      </span>
-                      <span className="text-[10px] tracking-widest text-white/30 group-hover:text-white/70 transition-colors">
-                        {link.number}
-                      </span>
-                    </Link>
-                  );
-                })}
-              </nav>
-
-              <div className="pt-2 mt-2 border-t border-white/10 px-3 pb-1 flex items-center justify-between text-[10px] text-white/40 tracking-wider">
-                <span>marcosalexov@gmail.com</span>
-                <span>CwB / BR</span>
-              </div>
-            </PopoverContent>
-          </Popover>
+          {/* Clean Menu Button: pure text, no background, no icon lines */}
+          <button
+            onClick={() => setIsOpen(true)}
+            className="font-medium tracking-[0.2em] uppercase text-xs md:text-sm text-white/70 hover:text-white transition-colors duration-300 focus:outline-none"
+            aria-label="Abrir menu"
+          >
+            Menu
+          </button>
         </div>
       </header>
 
-      {/* Subtle backdrop overlay when menu is open */}
-      {isOpen && (
-        <div
-          className="fixed inset-0 z-40 bg-black/50 backdrop-blur-[2px] transition-opacity duration-300"
-          onClick={() => setIsOpen(false)}
-          aria-hidden="true"
-        />
-      )}
+      {/* Fullscreen Pop-up Menu */}
+      <div
+        className={`fixed inset-0 z-[100] bg-black transition-all duration-500 flex flex-col ${
+          isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        }`}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Menu de navegação"
+      >
+        {/* Top bar with close 'X' button returning to home */}
+        <div className="container flex items-center justify-between h-16">
+          <button
+            onClick={handleReturnHome}
+            className="text-2xl font-bold tracking-tight leading-none text-white hover:opacity-80 transition-opacity focus:outline-none"
+            aria-label="Voltar para a página inicial"
+          >
+            Marcos Alex
+          </button>
+
+          <button
+            onClick={handleReturnHome}
+            className="p-2 text-white/80 hover:text-white hover:rotate-90 transition-all duration-300 focus:outline-none"
+            aria-label="Fechar menu e retornar à página inicial"
+          >
+            <X className="w-6 h-6 stroke-[1.5]" />
+          </button>
+        </div>
+
+        {/* Centered Navigation Options */}
+        <nav className="flex-1 flex flex-col items-center justify-center -mt-16">
+          <ul className="flex flex-col items-center gap-7 sm:gap-9 md:gap-11">
+            {NAV_LINKS.map((link, index) => {
+              const active = isActive(link.href, location.pathname);
+              return (
+                <li
+                  key={link.href}
+                  className={`transition-all duration-500 ease-out ${
+                    isOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+                  }`}
+                  style={{
+                    transitionDelay: isOpen ? `${index * 80 + 100}ms` : "0ms",
+                  }}
+                >
+                  <Link
+                    to={link.href}
+                    onClick={() => handleNavClick(link.href)}
+                    className={`block text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight text-center transition-all duration-300 hover:scale-105 ${
+                      active ? "text-white" : "text-neutral-400 hover:text-white"
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
+      </div>
     </>
   );
 };
