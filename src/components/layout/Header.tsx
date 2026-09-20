@@ -1,22 +1,39 @@
 import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { X } from "lucide-react";
+
+const NAV_LINKS = [
+  { label: "Portfolio", href: "/portfolio" },
+  { label: "About", href: "/#about" },
+  { label: "Journal", href: "/blog" },
+  { label: "Contact", href: "/#contact" },
+];
+
+const linkClass = (active: boolean) =>
+  `text-xs md:text-sm font-medium tracking-[0.2em] uppercase leading-none transition-colors duration-300 ${
+    active ? "text-white" : "text-white/60 hover:text-white"
+  }`;
+
+const isActive = (href: string, pathname: string) => {
+  if (href === "/portfolio") return pathname.startsWith("/portfolio");
+  if (href === "/blog") return pathname.startsWith("/blog");
+  return false;
+};
+
 const Header = () => {
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  // Detect if on homepage or project detail page
   const isHomepage = location.pathname === "/";
-  const navLinks = [{
-    href: "/",
-    label: "Home"
-  }, {
-    href: "/portfolio",
-    label: "Portfolio"
-  }, {
-    href: "/blog",
-    label: "Journal"
-  }];
+
+  // Smooth-scroll to section anchors (e.g. /#about, /#contact)
+  useEffect(() => {
+    if (location.hash) {
+      const timer = setTimeout(() => {
+        document.querySelector(location.hash)?.scrollIntoView({ behavior: "smooth" });
+      }, 150);
+      return () => clearTimeout(timer);
+    }
+  }, [location]);
 
   // Close menu on route change
   useEffect(() => {
@@ -34,20 +51,37 @@ const Header = () => {
       document.body.style.overflow = "";
     };
   }, [isMenuOpen]);
+
   return <>
       <header className={`absolute top-0 left-0 right-0 z-50 transition-colors duration-300 ${isHomepage ? "bg-transparent" : "bg-black"}`}>
         <div className="container flex items-center justify-between h-16">
           <Link to="/" className="text-2xl font-bold tracking-tight leading-none transition-colors duration-300 text-white">Marcos Alex</Link>
 
-          {/* Menu Button */}
-          <button onClick={() => setIsMenuOpen(true)} className="flex items-center gap-2 font-medium tracking-wide uppercase text-sm leading-none text-white hover:opacity-70 transition-all duration-300" aria-label="Open menu">
-            <span>Menu</span>
-            
+          {/* Desktop: direct navigation links */}
+          <nav className="hidden md:flex items-center gap-8">
+            {NAV_LINKS.map((link) => (
+              <Link
+                key={link.href}
+                to={link.href}
+                className={linkClass(isActive(link.href, location.pathname))}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+
+          {/* Mobile: menu button */}
+          <button
+            onClick={() => setIsMenuOpen(true)}
+            className="md:hidden font-medium tracking-[0.2em] uppercase text-sm leading-none text-white/60 hover:text-white transition-colors duration-300"
+            aria-label="Open menu"
+          >
+            Menu
           </button>
         </div>
       </header>
 
-      {/* Fullscreen Overlay Menu */}
+      {/* Fullscreen Overlay Menu (mobile) */}
       <div className={`fixed inset-0 z-[100] transition-all duration-500 ${isMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}>
         {/* Dark Overlay Background */}
         <div className="absolute inset-0 bg-black/95 backdrop-blur-sm" onClick={() => setIsMenuOpen(false)} />
@@ -69,10 +103,10 @@ const Header = () => {
           {/* Navigation Links */}
           <nav className="flex-1 flex items-center justify-center">
             <ul className="flex flex-col items-center gap-8">
-              {navLinks.map((link, index) => <li key={link.href} className={`transition-all duration-500 ${isMenuOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`} style={{
+              {NAV_LINKS.map((link, index) => <li key={link.href} className={`transition-all duration-500 ${isMenuOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`} style={{
               transitionDelay: isMenuOpen ? `${index * 100 + 200}ms` : "0ms"
             }}>
-                  <Link to={link.href} onClick={() => setIsMenuOpen(false)} className={`text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight transition-colors duration-300 ${location.pathname === link.href ? "text-white" : "text-white/50 hover:text-white"}`}>
+                  <Link to={link.href} onClick={() => setIsMenuOpen(false)} className={`text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight transition-colors duration-300 ${isActive(link.href, location.pathname) ? "text-white" : "text-white/50 hover:text-white"}`}>
                     {link.label}
                   </Link>
                 </li>)}
