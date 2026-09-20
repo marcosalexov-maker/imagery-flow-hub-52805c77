@@ -1,13 +1,198 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Zap, Eye, Sparkles, Clapperboard, Camera, MessageCircle, Mail } from "lucide-react";
+import { ArrowRight, Zap, Eye, Sparkles, Clapperboard, Camera, MessageCircle, Send, CheckCircle } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import { usePortfolioList } from "@/hooks/usePortfolio";
 import PortfolioSlider from "@/components/portfolio/PortfolioSlider";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/hooks/use-toast";
 
 import { HeroContent, HeroItem, FadeUp, SectionHeader, StaggerContainer, StaggerItem } from "@/components/ui/scroll-animation";
 import { TypingHeading } from "@/components/ui/typing-heading";
 import HeroSlider from "@/components/HeroSlider";
 import AboutCarousel from "@/components/AboutCarousel";
+
+const CONTACT_EMAIL = "marcosalexo@gmail.com";
+
+const ContactFormCard = () => {
+  const { toast } = useToast();
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    projectType: "",
+    message: "",
+    website: "", // Honeypot field - should remain empty
+  });
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    if (errors[name]) {
+      setErrors((prev) => ({ ...prev, [name]: "" }));
+    }
+  };
+
+  const validateForm = () => {
+    const newErrors: Record<string, string> = {};
+    if (!formData.name.trim()) {
+      newErrors.name = "Name is required";
+    }
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
+      newErrors.email = "Please enter a valid email";
+    }
+    if (!formData.message.trim()) {
+      newErrors.message = "Message is required";
+    }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!validateForm()) return;
+    if (formData.website) return; // Honeypot
+
+    const subject = `New project inquiry — ${formData.projectType.trim() || "General"}`;
+    const body = `Name: ${formData.name.trim()}\nEmail: ${formData.email.trim()}\nProject Type: ${formData.projectType.trim() || "—"}\n\n${formData.message.trim()}`;
+    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    setIsSubmitted(true);
+    toast({
+      title: "Message ready!",
+      description: "Your email client has been opened with your message.",
+    });
+  };
+
+  const resetForm = () => {
+    setFormData({ name: "", email: "", projectType: "", message: "", website: "" });
+    setErrors({});
+    setIsSubmitted(false);
+  };
+
+  const inputClass = (field: string) =>
+    `rounded-xl h-12 bg-white/10 border-white/20 text-white placeholder:text-white/40 focus-visible:ring-white/30 focus-visible:ring-offset-0 ${errors[field] ? "border-red-400/70" : ""}`;
+
+  return (
+    <div className="w-full max-w-2xl rounded-4xl bg-white/5 border border-white/10 p-6 md:p-8 text-left">
+      {isSubmitted ? (
+        <div className="flex flex-col items-center justify-center py-10 text-center">
+          <div className="w-14 h-14 bg-white/10 rounded-full flex items-center justify-center mb-4">
+            <CheckCircle className="w-7 h-7 text-white" />
+          </div>
+          <h3 className="text-xl font-normal mb-2">Message Sent!</h3>
+          <p className="text-white/60 text-sm max-w-sm">
+            Thank you for reaching out. I&apos;ll get back to you as soon as possible.
+          </p>
+          <button
+            type="button"
+            onClick={resetForm}
+            className="mt-6 inline-flex items-center justify-center gap-2 border border-white/20 text-white font-medium rounded-full hover:bg-white/10 transition-all duration-300 px-8 py-3.5"
+          >
+            Send Another Message
+          </button>
+        </div>
+      ) : (
+        <form onSubmit={handleSubmit} className="space-y-5" autoComplete="off">
+          {/* Honeypot field - hidden from users, bots will fill it */}
+          <div className="absolute -left-[9999px]" aria-hidden="true">
+            <label htmlFor="cta-website">Website</label>
+            <input
+              type="text"
+              id="cta-website"
+              name="website"
+              value={formData.website}
+              onChange={handleChange}
+              tabIndex={-1}
+              autoComplete="off"
+            />
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div className="space-y-2">
+              <label htmlFor="cta-name" className="text-sm font-medium text-white/80">
+                Name
+              </label>
+              <Input
+                id="cta-name"
+                name="name"
+                placeholder="Who you are"
+                value={formData.name}
+                onChange={handleChange}
+                maxLength={200}
+                className={inputClass("name")}
+              />
+              {errors.name && <p className="text-sm text-red-300/90">{errors.name}</p>}
+            </div>
+
+            <div className="space-y-2">
+              <label htmlFor="cta-email" className="text-sm font-medium text-white/80">
+                Email
+              </label>
+              <Input
+                id="cta-email"
+                name="email"
+                type="email"
+                placeholder="Your best email"
+                value={formData.email}
+                onChange={handleChange}
+                maxLength={254}
+                className={inputClass("email")}
+              />
+              {errors.email && <p className="text-sm text-red-300/90">{errors.email}</p>}
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <label htmlFor="cta-project-type" className="text-sm font-medium text-white/80">
+              Project Type
+            </label>
+            <Input
+              id="cta-project-type"
+              name="projectType"
+              placeholder="Event, Video, Photography, Content creation"
+              value={formData.projectType}
+              onChange={handleChange}
+              maxLength={200}
+              className={inputClass("projectType")}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label htmlFor="cta-message" className="text-sm font-medium text-white/80">
+              Message
+            </label>
+            <Textarea
+              id="cta-message"
+              name="message"
+              placeholder="Tell me more about your project"
+              rows={5}
+              value={formData.message}
+              onChange={handleChange}
+              maxLength={10000}
+              className={`rounded-xl resize-none bg-white/10 border-white/20 text-white placeholder:text-white/40 focus-visible:ring-white/30 focus-visible:ring-offset-0 ${errors.message ? "border-red-400/70" : ""}`}
+            />
+            {errors.message && <p className="text-sm text-red-300/90">{errors.message}</p>}
+          </div>
+
+          <div className="flex justify-center pt-1">
+            <button
+              type="submit"
+              className="inline-flex items-center justify-center gap-2 bg-white text-black font-medium rounded-full hover:bg-white/90 transition-all duration-300 px-8 py-3.5"
+            >
+              Send Message
+              <Send className="w-4 h-4" />
+            </button>
+          </div>
+        </form>
+      )}
+    </div>
+  );
+};
 
 const Index = () => {
   const {
