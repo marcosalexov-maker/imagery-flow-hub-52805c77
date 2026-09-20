@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Zap, Eye, Sparkles, Clapperboard, Camera } from "lucide-react";
+import { ArrowRight, Zap, Eye, Sparkles, Clapperboard, Camera, MessageCircle, Mail } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import { usePortfolioList } from "@/hooks/usePortfolio";
 import PortfolioSlider from "@/components/portfolio/PortfolioSlider";
