@@ -61,8 +61,8 @@ export const siteContent = {
   home: {
     // Top Hero Section
     hero: {
-      badge: "FILMMAKING & PHOTOGRAPHY",
-      headingLine1: "Stories through the lens",
+      badge: "FILMMAKER & FOTÓGRAFO",
+      headingLine1: "Marcos Alex",
       headingLine2: "", // Optional 2nd animated line
       ctaButton: "All Projects",
       ctaHref: "/portfolio",
