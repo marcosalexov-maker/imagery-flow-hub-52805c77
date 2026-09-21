@@ -293,7 +293,7 @@ const Index = () => {
         <div className="container relative z-10 text-center">
           <HeroContent className="flex flex-col gap-[12px] max-w-5xl mx-auto items-center">
             {/* Text Group */}
-            <div className="flex flex-col gap-[12px]">
+            <div className="flex flex-col gap-[4px]">
               <HeroItem>
                 <p className="text-sm font-medium tracking-[0.3em] uppercase text-white/70">
                   {home.hero.badge}
